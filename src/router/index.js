@@ -1,36 +1,41 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Edit from '../views/Edit.vue';
+import Base from '../views/Base.vue';
+import Total from '../views/Total.vue';
+import About from '../views/About.vue';
+
+
 
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  // path: '/',
-  // redirect: '/edit', //设置默认指向的路径
-  // name: 'APP'
-  // },
   {
-    path: '/edit',
+    path: '/',
+    redirect: '/Edit', //设置默认指向的路径
+  },
+  {
+    path: '/Edit',
     name: 'Edit',
-    component: () => import('../views/Edit.vue')
+    component: Edit
   },
   {
-    path: '/base',
+    path: '/Base',
     name: 'Base',
-    component: () => import('../views/Base.vue')
+    component: Base
   },
   {
-    path: '/total',
+    path: '/Total',
     name: 'Total',
-    component: () => import('../views/Total.vue')
+    component: Total
   },
   {
-    path: '/setting',
+    path: '/Setting',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import('../views/About.vue')
+    component: About
   },
   // {
   //   path: '/thisyear'
@@ -41,10 +46,9 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: '/tally/',
   routes
 })
 
-router.push('Edit')
 
 export default router
