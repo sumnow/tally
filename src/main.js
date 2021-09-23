@@ -7,7 +7,7 @@ import 'vant/lib/index.css';
 import AlloyFinger from 'alloyfinger'
 import AlloyFingerPlugin from 'alloyfinger/vue/alloy_finger_vue'
 
-Vue.use(AlloyFingerPlugin,{
+Vue.use(AlloyFingerPlugin, {
   AlloyFinger
 })
 
@@ -16,9 +16,11 @@ window.$E = echarts
 
 window.lsg = function (e, i) {
   if (i) {
+    console.log('[lsg]write', e, i)
     window.localStorage.setItem(e, JSON.stringify(i))
     return i
   } else {
+    console.log('[lsg]read', e, i)
     return JSON.parse(window.localStorage.getItem(e))
   }
 }
