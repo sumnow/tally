@@ -1,7 +1,16 @@
 <template>
     <div>
-        <van-field label="Version" value="Beta0.1" readonly />
-        <van-field label="Author" value="Mervin" readonly />
+        <van-field label="Version" value="Beta 0.1.2" readonly></van-field>
+        <van-field
+            label="ID"
+            v-model="userInfo.userId"
+            @blur="setUserId"
+        ></van-field>
+        <van-field
+            label="Family"
+            v-model="userInfo.familyId"
+            @blur="setFamilyId"
+        ></van-field>
         <van-field label="Storage" :value="limit" readonly />
         <van-divider dashed>分割</van-divider>
 
@@ -31,7 +40,16 @@ export default {
         return {
             infoDb: "",
             val: "",
+            userInfo: {
+                userId: undefined,
+                familyId: undefined,
+            },
         };
+    },
+    created() {
+        if (lsg("userInfo")) {
+            this.userInfo = lsg('userInfo')
+        }
     },
     computed: {
         limit() {
@@ -55,6 +73,16 @@ export default {
         },
     },
     methods: {
+        setUserId() {
+            if (this.userInfo.familyId) {
+                lsg("userInfo", this.userInfo);
+            }
+        },
+        setFamilyId() {
+            if (this.userInfo.userId) {
+                lsg("userInfo", this.userInfo);
+            }
+        },
         showData() {
             this.infoDb = JSON.stringify(lsg("db"));
             function createAndDownloadFile(fileName, content) {
