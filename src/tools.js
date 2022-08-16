@@ -1,185 +1,82 @@
-const moduleData = [{
-    txt: '大餐',
-    cost: 0,
-},
-{
-    txt: '简餐',
-    cost: 0
-},
-{
-    txt: '零食',
-    cost: 0
-},
-{
-    txt: '话费',
-    cost: 0
-},
-{
-    txt: '水费',
-    cost: 0
-},
-{
-    txt: '电费',
-    cost: 0
-},
-{
-    txt: '燃气费',
-    cost: 0
-},
-{
-    txt: '网费',
-    cost: 0
-},
-{
-    txt: '房租及物业',
-    cost: 0
-}, {
-    txt: '维修',
-    cost: 0
-},
-{
-    txt: '必需',
-    cost: 0
-},
-{
-    txt: '刚好',
-    cost: 0
-},
-{
-    txt: '剁手',
-    cost: 0
-},
-{
-    txt: '打车',
-    cost: 0
-},
-{
-    txt: '地铁',
-    cost: 0
-},
-{
-    txt: '骑车',
-    cost: 0
-},
-{
-    txt: '其他出行',
-    cost: 0
-}, {
-    txt: '亲人',
-    cost: 0
-}, {
-    txt: '情侣',
-    cost: 0
-}, {
-    txt: '同事',
-    cost: 0
-}, {
-    txt: '其他情感',
-    cost: 0
-}, {
-    txt: '课程',
-    cost: 0
 
-}, {
-    txt: '电影',
-    cost: 0
-}
-]
 const statusMap = [{
+    id: 100,
     type: '吃喝',
-    subType: [{
-        txt: '大餐'
-    }, {
-        txt: '简餐'
-    }, {
-        txt: '零食'
-    }, {
-        txt: '外卖'
-    }, {
-        txt: '水果'
-    }]
+    subType: {
+        1: '大餐',
+        2: '简餐',
+        3: '零食',
+        4: '外卖',
+        5: '水果'
+    }
 },
 {
+    id: 200,
     type: '生活',
-    subType: [{
-        txt: '话费',
-    },
-    {
-        txt: '必需品',
-    },
-    {
-        txt: '水费',
-    },
-    {
-        txt: '电费',
-    },
-    {
-        txt: '燃气费',
-    },
-    {
-        txt: '网费',
-    },
-    {
-        txt: '房租物业',
-    }, {
-        txt: '维修',
+    subType: {
+        1: '网络话费',
+        2: '水电燃气',
+        3: '房租物业',
+        4: '维修'
     }
-    ]
 }, {
+    id: 300,
     type: '购物',
-    subType: [{
-        txt: '必需',
-
+    subType: {
+        1: '必需',
+        2: '刚好',
+        3: '剁手',
     },
-    {
-        txt: '刚好',
-    },
-    {
-        txt: '剁手',
-    }
-    ]
 }, {
+    id: 400,
     type: '出行',
-    subType: [{
-        txt: '打车',
-    },
-    {
-        txt: '地铁',
-    },
-    {
-        txt: '骑车',
-    },
-    {
-        txt: '其他出行',
+    subType: {
+        1: '打车',
+        2: '地铁',
+        3: '骑车',
+        4: '其他出行',
     }
-    ]
 }, {
-    type: '人情',
-    subType: [{
-        txt: '亲人',
-    }, {
-        txt: '同事',
-    }, {
-        txt: '其他情感',
-    }]
+    id: 500,
+    type: '情感',
+    subType: {
+        1: '亲人',
+        2: '同事',
+        3: '其他情感',
+    },
 }, {
+    id: 600,
     type: '提升',
-    subType: [{
-        txt: '课程',
-    }]
+    subType: {
+        1: '课程',
+    }
 }, {
+    id: 700,
     type: '娱乐',
-    subType: [{
-        txt: '电影',
-    }]
+    subType: {
+        1: '电影',
+        2: '旅游'
+    }
 }
 ]
 
+const dayTotal = {
+    day: 22,
+    month: 12,
+    year: 2021,
+    dayCost: [
+        {
+            type: 101,
+            cost: `${Math.random() * 100}`.slice(0, 4),
+            tips: '',
+            time: new Date().getTime()
+        }
+    ]
+}
 const totalData = [
-
     // {
     //     date: '2020-05-12',
-    //     thisdayCost: [{
+    //     currentDayCost: [{
     //         type: '吃喝',
     //         subType: [{
     //                 txt: '大餐',
@@ -292,7 +189,7 @@ const totalData = [
     //     }],
     // }, {
     //     date: '2020-05-13',
-    //     thisdayCost: [{
+    //     currentDayCost: [{
     //         type: '吃喝',
     //         subType: [{
     //             txt: '零食',
@@ -335,5 +232,5 @@ const totalData = [
 export default {
     totalData,
     statusMap,
-    moduleData
+    dayTotal
 }

@@ -88,7 +88,7 @@ export default {
         // lsg("db", [
         //   {
         //     date: "2020-05-14",
-        //     thisdayCost: [
+        //     currentDayCost: [
         //       { txt: "地铁", cost: 20 },
         //       { txt: "零食", cost: 100 }
         //     ]

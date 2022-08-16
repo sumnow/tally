@@ -16,7 +16,6 @@
                     <edit-module
                         :info="list[list.length - 1 - index]"
                         :list="list"
-                        :columnsMap="columnsMap"
                         :colIndex="list.length - 1 - index"
                     />
                 </div>
@@ -59,7 +58,6 @@ export default {
     data() {
         return {
             columns: [],
-            columnsMap: [],
             showKeyboard: false,
             showPicker: false,
             pattern: /\d+(\.\d+|)/,
@@ -140,14 +138,14 @@ export default {
         filterData() {
             console.log("切换日期到", this.titleDate);
             if (this.db[this.titleDate]) {
-                this.list = this.db[this.titleDate].thisdayCost;
+                this.list = this.db[this.titleDate].currentDayCost;
             } else {
                 Toast(`${this.titleDate}无数据`);
                 this.$set(this.db, this.titleDate, {
                     totalCost: 0,
-                    thisdayCost: [],
+                    currentDayCost: [],
                 });
-                this.list = this.db[this.titleDate].thisdayCost;
+                this.list = this.db[this.titleDate].currentDayCost;
             }
             if (this.list.length === 0) {
                 this.list.push({
@@ -195,14 +193,14 @@ export default {
                     console.log("删除某日空数据", _arr[i]);
                 } else {
                     let _temp = [];
-                    this.db[_arr[i]].thisdayCost.forEach((e) => {
+                    this.db[_arr[i]].currentDayCost.forEach((e) => {
                         if (e.cost !== 0) {
                             _temp.push(e);
                         }
                     });
                     obj[_arr[i]] = {
                         totalCost: this.db[_arr[i]].totalCost,
-                        thisdayCost: _temp,
+                        currentDayCost: _temp,
                     };
                 }
                 console.log(obj);
@@ -220,11 +218,6 @@ export default {
         this.filterData();
         this.totalData = lsg("info") || [];
         console.log(this.totalData);
-        this.columnsMap = Object.fromEntries(
-            obj.statusMap.map((e) => {
-                return [e.type, e.subType.map((el) => el.txt)];
-            })
-        );
     },
 };
 </script>

@@ -24,7 +24,7 @@
         >
         <van-field
             v-model="infoDb"
-            rows="1"
+            rows="5"
             label="数据"
             type="textarea"
             readonly
@@ -48,7 +48,7 @@ export default {
     },
     created() {
         if (lsg("userInfo")) {
-            this.userInfo = lsg('userInfo')
+            this.userInfo = lsg("userInfo");
         }
     },
     computed: {
@@ -84,20 +84,23 @@ export default {
             }
         },
         showData() {
-            this.infoDb = JSON.stringify(lsg("db"));
-            function createAndDownloadFile(fileName, content) {
-                var aTag = document.createElement("a");
-                var blob = new Blob([content]);
-                aTag.download = fileName;
-                aTag.href = URL.createObjectURL(blob);
-                aTag.click();
-                URL.revokeObjectURL(blob);
-            }
-            if (this.infoDb != "null") {
-                createAndDownloadFile(
-                    `tally-file-${new Date().getTime()}`,
-                    this.infoDb
-                );
+            if (this.infoDb) {
+                function createAndDownloadFile(fileName, content) {
+                    var aTag = document.createElement("a");
+                    var blob = new Blob([content]);
+                    aTag.download = fileName;
+                    aTag.href = URL.createObjectURL(blob);
+                    aTag.click();
+                    URL.revokeObjectURL(blob);
+                }
+                if (this.infoDb != "null") {
+                    createAndDownloadFile(
+                        `tally-file-${new Date().getTime()}`,
+                        this.infoDb
+                    );
+                }
+            } else {
+                this.infoDb = JSON.stringify(lsg("db"));
             }
         },
         saveData() {
@@ -108,14 +111,14 @@ export default {
                     console.log("删除某日空数据", _arr[i]);
                 } else {
                     let _temp = [];
-                    this.db[_arr[i]].thisdayCost.forEach((e) => {
+                    this.db[_arr[i]].currentDayCost.forEach((e) => {
                         if (e.cost !== 0) {
                             _temp.push(e);
                         }
                     });
                     obj[_arr[i]] = {
                         totalCost: this.db[_arr[i]].totalCost,
-                        thisdayCost: _temp,
+                        currentDayCost: _temp,
                     };
                 }
                 console.log(obj);
@@ -129,7 +132,7 @@ export default {
                 try {
                     const obj = JSON.parse(this.val);
                     if (typeof obj != "object") {
-                        throw new Error("转话错误");
+                        throw new Error("转化错误");
                     }
                     lsg("db", obj);
                 } catch {

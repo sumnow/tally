@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <div>出发</div>
+  </div>
 </template>
 
 <script>
@@ -28,6 +30,7 @@ export default {
   },
   data() {
     return {};
+    
   }
 };
 </script>

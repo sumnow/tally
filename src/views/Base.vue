@@ -110,7 +110,7 @@ export default {
     filterBarDataByDate(date) {
       // 处理今日和昨日
       if (this.db[date]) {
-        const _temp = this.db[date].thisdayCost;
+        const _temp = this.db[date].currentDayCost;
         const _tempMap = {};
         for (let i = _temp.length - 1; i >= 0; i--) {
           if (_tempMap[_temp[i].txt]) {

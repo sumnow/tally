@@ -136,7 +136,7 @@ export default {
       return opt;
     },
     setOptions() {
-      const opt = this.handelrData(this.pieChartData.thisdayCost);
+      const opt = this.handelrData(this.pieChartData.currentDayCost);
       this.chart.setOption(opt);
     }
   }
