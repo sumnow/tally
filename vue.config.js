@@ -3,7 +3,7 @@ const path = require("path");
 
 
 module.exports = {
-    publicPath: "./",
+    publicPath: "/tally/",
     assetsDir: "./static",
     productionSourceMap: false,
     lintOnSave: true,

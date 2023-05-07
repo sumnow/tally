@@ -25,69 +25,118 @@ Vue.prototype.statusKeyMap = function () {
   })
   return statusKeyMap
 }
-
 const keyValueObj = {
   'currentDayCost': 'a',
   'totalCost': 'b',
-  'text': 'c',
+  'txt': 'c',
   'cost': 'd',
-  'message': 'e'
+  'message': 'e',
+  'event': 'f',
+  'finishTime': 't'
 }
+
+const p1 = Object.fromEntries(Object.entries(keyValueObj).map(e => {
+  return [e[1], e[0]]
+}))
 
 function changeKV(e) {
   return keyValueObj[e]
 }
 
-const saveData = (dataBase) => {
-  const _arr = Object.keys(dataBase);
-  const obj = {};
-  for (let i = _arr.length - 1; i >= 0; i--) {
-    if (dataBase[_arr[i]].totalCost === 0) {
-      console.log("delete nil data which day", _arr[i]);
-    } else {
-      let _temp = [];
-      dataBase[_arr[i]].currentDayCost.forEach((e) => {
-        if (e.cost !== 0) {
-          let l = {}
-          l[changeKV('cost')] = e.cost;
-          l[changeKV('txt')] = e.txt;
-          l[changeKV('message')] = e.message;
-          _temp.push(l);
-        }
-      });
-      let m = {}
-      m[changeKV('totalCost')] = dataBase[_arr[i]].totalCost
-      m[changeKV('currentDayCost')] = _temp
-      obj[_arr[i]] = m
-    }
-    console.log(obj);
-  }
-  return obj
+function revertKV(e) {
+  return p1[e]
 }
 
-const readData = (data) => {
+const saveData = (data) => {
+  data = JSON.parse(JSON.stringify(data))
+  console.log(data)
+  if (data === undefined || data === null) return undefined
+
   function parseObj(_data) {
     if (typeof _data === 'object') {
-      if (_data instanceof Array)  {
-
+      if (_data instanceof Array) {
+        _data.forEach((e, i) => {
+          _data[i] = parseObj(e)
+        })
+      } else {
+        Object.keys(_data).forEach(e => {
+          if(changeKV(e)) {
+            _data[changeKV(e)] = parseObj(_data[e]);
+            delete _data[e]
+          } else {
+            _data[e] = parseObj(_data[e])
+          }
+        })
       }
     } else {
       return _data
     }
+    return _data
   }
+  return parseObj(data)
+  // const _arr = Object.keys(dataBase);
+  // const obj = {};
+  // for (let i = _arr.length - 1; i >= 0; i--) {
+  //   if (dataBase[_arr[i]].totalCost === 0) {
+  //     console.log("delete nil data which day", _arr[i]);
+  //   } else {
+  //     let _temp = [];
+  //     dataBase[_arr[i]].currentDayCost.forEach((e) => {
+  //       if (e.cost !== 0) {
+  //         let l = {}
+  //         l[changeKV('cost')] = e.cost;
+  //         l[changeKV('txt')] = e.txt;
+  //         l[changeKV('message')] = e.message;
+  //         _temp.push(l);
+  //       }
+  //     });
+  //     let m = {}
+  //     m[changeKV('totalCost')] = dataBase[_arr[i]].totalCost
+  //     m[changeKV('currentDayCost')] = _temp
+  //     obj[_arr[i]] = m
+  //   }
+  //   console.log(obj);
+  // }
+  // return obj
+}
+
+const readData = (data) => {
+  if (data === undefined || data === null) return undefined
+  function parseObj(_data) {
+    if (typeof _data === 'object') {
+      if (_data instanceof Array) {
+        _data.forEach((e, i) => {
+          _data[i] = parseObj(e)
+        })
+      } else {
+        Object.keys(_data).forEach(e => {
+          if(revertKV(e)) {
+            _data[revertKV(e)] = parseObj(_data[e]);
+            delete _data[e]
+          } else {
+            _data[e] = parseObj(_data[e])
+          }
+        })
+      }
+    } else {
+      return _data
+    }
+    return _data
+  }
+  return parseObj(data)
 }
 
 window.lsg = function (e, i) {
   if (i) {
-    const result = saveData(i)
-    console.log('[lsg]write', e, result)
-    window.localStorage.setItem(e, JSON.stringify(result))
+    console.log('[lsg]write',e,i)
+    window.localStorage.setItem(e, JSON.stringify(i))
     return i
   } else {
-    const read = saveData(i)
+    const c = window.localStorage.getItem(e)
+    const _e = JSON.parse(c)
 
-    console.log('[lsg]read', e, i)
-    return JSON.parse(window.localStorage.getItem(e))
+    console.log('[lsg]read', _e)
+    return _e
   }
 }
 

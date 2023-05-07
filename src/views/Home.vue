@@ -75,27 +75,28 @@ export default {
             return `height: ${window.outerHeight - 96}px`;
         },
     },
+    created(){
+        console.log("get data", lsg("db"));
+        this.$store.state.db = lsg("db") || {};
+        this.$store.commit("changeDB", this.$store.state.db);
+    },
     watch: {
         $route(to, from) {
-            console.log("路由", to, from);
+            console.log("route", to, from);
             // this.lastActive = from.name;
             // this.active = to.name;
         },
     },
     mounted() {
-        console.log("获取数据", lsg("db"));
-        // this.$router.replace('Edit')
-        // lsg("db", [
-        //   {
-        //     date: "2020-05-14",
-        //     currentDayCost: [
-        //       { txt: "地铁", cost: 20 },
-        //       { txt: "零食", cost: 100 }
-        //     ]
-        //   }
-        // ]);
-        this.$store.state.db = lsg("db") || {};
-        this.$store.commit("changeDB", this.$store.state.db);
+        // lsg("db", {
+        //     "2020-05-14": {
+        //         currentDayCost: [
+        //             { txt: "地铁", cost: 20 },
+        //             { txt: "零食", cost: 100 },
+        //         ],
+        //     },
+        // });
+
     },
     methods: {
         pastDate(date, n = 1) {

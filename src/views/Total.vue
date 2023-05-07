@@ -17,7 +17,14 @@
                     v-if="item.finishTime && item.finishTime > 0"
                 ></div>
                 <div class="line-inner">
-                    <div>{{ item.event + (item.finishTime || "") }}</div>
+                    <div>
+                        {{ item.event }}
+                        {{
+                            item.finishTime
+                                ? new Date(item.finishTime).toLocaleString()
+                                : ""
+                        }}
+                    </div>
                     <div class="btn-mark-time">
                         <div class="circle btn" @click="finishTask(index)">
                             完成
@@ -34,18 +41,19 @@ export default {
     name: "Total",
     data() {
         return {
+            ur: {},
             eventList: [
-                { time: 0, event: "M起床", finishTime: 0 },
-                { time: 0, event: "W起床", finishTime: 0 },
-                { time: 0, event: "出发", finishTime: 0 },
-                { time: 0, event: "W送公司", finishTime: 0 },
-                { time: 0, event: "M到公司", finishTime: 0 },
-                { time: 0, event: "M下班", finishTime: 0 },
-                { time: 0, event: "W下班", finishTime: 0 },
-                { time: 0, event: "接到W", finishTime: 0 },
-                { time: 0, event: "M到家", finishTime: 0 },
-                { time: 0, event: "W到家", finishTime: 0 },
-                { time: 0, event: "睡觉", finishTime: 0 },
+                { event: "M起床", finishTime: 0 },
+                { event: "W起床", finishTime: 0 },
+                { event: "出发", finishTime: 0 },
+                { event: "W送公司", finishTime: 0 },
+                { event: "M到公司", finishTime: 0 },
+                { event: "M下班", finishTime: 0 },
+                { event: "W下班", finishTime: 0 },
+                { event: "接到W", finishTime: 0 },
+                { event: "M到家", finishTime: 0 },
+                { event: "W到家", finishTime: 0 },
+                { event: "睡觉", finishTime: 0 },
             ],
         };
     },
@@ -61,8 +69,27 @@ export default {
         finishTask(index) {
             const sortFunction = (arr) => {};
             this.eventList[index].finishTime = new Date().getTime();
-            this.eventList;
+            this.eventList = this.eventList.sort(
+                (a, b) => a.finishTime - b.finishTime
+            );
+            this.ur[this.titleDate] = this.eventList;
+            lsg("ur", this.ur);
         },
+    },
+    mounted() {
+        const ur = lsg("ur");
+        if (ur) {
+            this.ur = ur;
+            if (this.titleDate && this.ur[this.titleDate]) {
+                this.eventList = this.ur[this.titleDate];
+            } else {
+                this.ur = {};
+                this.ur[this.titleDate] = this.eventList;
+            }
+        } else {
+            this.ur = {};
+            this.ur[this.titleDate] = this.eventList;
+        }
     },
 };
 </script>

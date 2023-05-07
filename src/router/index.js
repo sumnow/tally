@@ -45,8 +45,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  // base: '/tally/',
+  mode: 'hash',
+  base: '/tally/',
   routes
 })
 

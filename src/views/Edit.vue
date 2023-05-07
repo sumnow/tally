@@ -109,7 +109,8 @@ export default {
                         (a, b) => a + parseFloat(b.cost),
                         0
                     );
-                    console.log("change", e);
+                    console.log("change123", e);
+                    this.filterData();
                 }
                 return e;
             },
@@ -162,12 +163,15 @@ export default {
             return options;
         },
         onClickLeft() {
-            Toast("保存成功");
-            this.list.push({
-                txt: "",
-                cost: 0,
-                message: "",
-            });
+            Toast("save success");
+            const lastEle = this.list[list.length - 1];
+            if (!lastEle.type) {
+                this.list.push({
+                    txt: "",
+                    cost: 0,
+                    message: "",
+                });
+            }
             this.saveData();
         },
         onClickRight() {
@@ -186,38 +190,31 @@ export default {
             this.show = true;
         },
         saveData() {
-            const _arr = Object.keys(this.db);
-            const obj = {};
-            for (let i = _arr.length - 1; i >= 0; i--) {
-                if (this.db[_arr[i]].totalCost === 0) {
-                    console.log("删除某日空数据", _arr[i]);
-                } else {
-                    let _temp = [];
-                    this.db[_arr[i]].currentDayCost.forEach((e) => {
-                        if (e.cost !== 0) {
-                            _temp.push(e);
-                        }
-                    });
-                    obj[_arr[i]] = {
-                        totalCost: this.db[_arr[i]].totalCost,
-                        currentDayCost: _temp,
-                    };
-                }
-                console.log(obj);
-            }
-
-            lsg("db", obj);
+            console.log(this.db);
+            this.db[this.titleDate] = {
+                currentDayCost: this.list,
+                totalCost: this.totalCost,
+            };
+            lsg("db", this.db);
         },
     },
     mounted() {
-        console.log(2314, this.$route.query);
+        console.log(`query is ${this.$route.query}`);
         if (this.$route.query.date) {
             this.$store.commit("changeDate", this.$route.query.date);
         }
         this.currentDate = new Date(this.titleDate);
-        this.filterData();
-        this.totalData = lsg("info") || [];
-        console.log(this.totalData);
+        if (!this.db[this.titleDate]) {
+            this.list = [
+                {
+                    txt: "",
+                    cost: 0,
+                },
+            ];
+        } else {
+            this.list = this.db[this.titleDate]["currentDayCost"];
+        }
+        console.log(2314, this.db);
     },
 };
 </script>

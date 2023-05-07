@@ -56,7 +56,6 @@
             <van-picker
                 safe-area-inset-bottom
                 show-toolbar
-                :props="{'value-key': 'txt'}"
                 :columns="columns"
                 @change="onChange"
                 @confirm="onConfirm"
@@ -86,7 +85,7 @@ export default {
     data() {
         return {
             columns: [],
-
+            statusMap: {},
             // { values: ["大餐", "简餐", "零食", "外卖", "水果"] }
             showKeyboard: false,
             showPicker: false,
@@ -113,7 +112,7 @@ export default {
         vanField: Field,
         vanForm: Form,
     },
-    
+
     created() {
         this.columns = obj.statusMap.map((e) => {
             const l = {
@@ -122,7 +121,8 @@ export default {
                 children: [],
             };
             for (const [k, v] of Object.entries(e.subType)) {
-                l.children.push({ id: k, text: v });
+                l.children.push({ id: k + l.id, text: v });
+                this.statusMap[v] = k;
             }
             return l;
         });

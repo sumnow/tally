@@ -1,6 +1,8 @@
 <template>
     <div>
-        <van-field label="Version" value="Beta 0.1.2" readonly></van-field>
+        <van-field label="Version" :value="version" readonly></van-field>
+        <van-divider dashed>分割</van-divider>
+
         <van-field
             label="ID"
             v-model="userInfo.userId"
@@ -15,9 +17,10 @@
         <van-divider dashed>分割</van-divider>
 
         <van-field label="Import" v-model="val" />
-        <van-button type="primary" size="large" @click="importData"
-            >Import Data</van-button
+        <van-button type="primary" size="large" @click="syncData"
+            >Synchronize Data</van-button
         >
+
         <van-divider dashed>分割</van-divider>
         <van-button type="primary" size="large" @click="showData"
             >Checkout Data</van-button
@@ -33,12 +36,14 @@
 </template>
 
 <script>
+import { version } from "../../package.json";
 import { Toast } from "vant";
 export default {
     name: "",
     data() {
         return {
             infoDb: "",
+            version: "0.0.1",
             val: "",
             userInfo: {
                 userId: undefined,
@@ -47,9 +52,11 @@ export default {
         };
     },
     created() {
-        if (lsg("userInfo")) {
-            this.userInfo = lsg("userInfo");
-        }
+        this.version = version;
+        // this.version = require("@/package.json").version;
+        // if (lsg("userInfo")) {
+        // this.userInfo = lsg("userInfo");
+        // }
     },
     computed: {
         limit() {
@@ -100,7 +107,10 @@ export default {
                     );
                 }
             } else {
-                this.infoDb = JSON.stringify(lsg("db"));
+                this.infoDb = JSON.stringify({
+                    db: lsg("db"),
+                    ur: lsg("ur"),
+                });
             }
         },
         saveData() {
@@ -139,6 +149,23 @@ export default {
                     Toast("处理失败");
                 }
             }
+        },
+
+        syncData() {
+            const c = JSON.stringify({
+                db: lsg("db"),
+                ur: lsg("ur"),
+            });
+            fetch("/applicati0n/application", {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    app: "test",
+                    data: c,
+                }),
+                method: "PUT",
+            });
         },
     },
 };
